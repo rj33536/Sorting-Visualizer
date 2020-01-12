@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <canvas
+      id="myCanvas"
+      width="400"
+      height="400"
+      style="border:1px solid #d3d3d3;"
+    >
+      Your browser does not support the HTML5 canvas tag.</canvas
+    >
+
+    <script>
+      let x1 = 20,
+        y1 = 20,
+        x1_change = 0,
+        y1_change = 0,
+        width = 400,
+        height = 400,
+        foodx = 200,
+        foody = 200,
+        draw_food = true,
+        score = 0;
+        let snake = [];
+
+      var c = document.getElementById('myCanvas');
+      var ctx = c.getContext('2d');
+
+      // Fill with gradient
+      ctx.fillRect(x1, y1, 10, 10);
+      document.querySelector('body').addEventListener('keydown', myFunction);
+      setInterval(function() {
+        
+        x1 += x1_change;
+        y1 += y1_change;
+        if (x1 < 10) x1 = width - 10;
+        if (x1 > width - 10) x1 = 10;
+        if (y1 < 10) y1 = height - 10;
+        if (y1 > height - 10) y1 = 10;
+        
+        if (draw_food==true) {
+          foodx =(Math.floor(Math.random(5)*((width-100)/10))+5)*10;
+          foody = (Math.floor(Math.random(5)*((height-100)/10))+5)*10;
+          draw_food = false;
+        }
+        if (x1 == foodx & y1 == foody) {
+          score += 1;
+          console.log(score);
+          draw_food = true;
+        }
+        if(score<snake.length){
+          snake.shift();
+          snake.pop();
+        }
+        snake.push([x1,y1]);
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle= 'green';
+        for (let i=0;i<snake.length;i++)
+        ctx.fillRect(snake[i][0], snake[i][1], 10, 10);
+        ctx.fillStyle= 'red';
+        ctx.fillRect(foodx, foody, 10, 10);
+      }, 100);
+      function myFunction(e) {
+        if (e['key'] == 'ArrowUp') {
+          (y1_change = -10), (x1_change = 0);
+        }
+        if (e['key'] == 'ArrowDown') {
+          (y1_change = 10), (x1_change = 0);
+        }
+        if (e['key'] == 'ArrowLeft') {
+          (x1_change = -10), (y1_change = 0);
+        }
+        if (e['key'] == 'ArrowRight') {
+          (x1_change = 10), (y1_change = 0);
+        }
+      }
+    </script>
+  </body>
+</html>
